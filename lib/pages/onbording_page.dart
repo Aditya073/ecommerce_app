@@ -33,7 +33,7 @@ class _OnbordingPageState extends State<OnbordingPage> {
             SizedBox(height: 20),
 
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.only(right: 10.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
