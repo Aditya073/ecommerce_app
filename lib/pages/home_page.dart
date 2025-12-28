@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  List categories = [
+    "images/headphones.png",
+    "images/laptop_.png",
+    "images/phone_.jpg",
+    "images/tv_.jpg",
+  ];
+  bool? isSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -105,8 +118,76 @@ class HomePage extends StatelessWidget {
                 ],
               ),
             ),
+
+            Row(
+              children: [
+                Container(
+                  margin: EdgeInsets.all(10),
+                  height: 150,
+                  width: 90,
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'All',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: SizedBox(
+                    // margin: EdgeInsets.only(left: 20),
+                    height: 150,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: categories.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return categorieCard(image: categories[index]);
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class categorieCard extends StatelessWidget {
+  String image;
+
+  categorieCard({super.key, required this.image});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.all(10),
+      // height: 90,
+      width: 90,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 10, right: 5, left: 5),
+            child: Image.asset(image),
+          ),
+          const Spacer(),
+          Icon(Icons.arrow_forward),
+        ],
       ),
     );
   }
