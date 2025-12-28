@@ -125,7 +125,7 @@ class _HomePageState extends State<HomePage> {
                       scrollDirection: Axis.horizontal,
                       itemCount: categories.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return categorieCard(image: categories[index]);
+                        return CategorieCard(image: categories[index]);
                       },
                     ),
                   ),
@@ -259,10 +259,10 @@ class TextWidgets extends StatelessWidget {
   }
 }
 
-class categorieCard extends StatelessWidget {
+class CategorieCard extends StatelessWidget {
   String image;
   // this is a constructor
-  categorieCard({super.key, required this.image});
+  CategorieCard({super.key, required this.image});
   @override
   Widget build(BuildContext context) {
     return Container(
