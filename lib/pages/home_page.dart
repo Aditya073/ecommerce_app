@@ -173,8 +173,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 SizedBox(height: 5),
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                                   children: [
                                     Padding(
