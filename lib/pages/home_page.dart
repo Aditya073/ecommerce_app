@@ -92,32 +92,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
 
-            Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Categories',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                      fontSize: 20,
-                    ),
-                  ),
-
-                  Text(
-                    'See all',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.red,
-                      fontSize: 20,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            TextWidgets(blackText: 'Categories', redText: 'See all'),
 
             Row(
               children: [
@@ -145,7 +120,6 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Expanded(
                   child: SizedBox(
-                    // margin: EdgeInsets.only(left: 20),
                     height: 150,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
@@ -158,6 +132,89 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
+
+            TextWidgets(blackText: 'All products', redText: 'See all'),
+
+            Container(
+              margin: EdgeInsets.only(top: 20, left: 10, right: 10),
+              width: double.infinity,
+              height: 250,
+              color: Color.fromARGB(255, 0, 0, 255),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: 230,
+                      child: ListView.builder(
+                        itemCount: 5,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            width: 190,
+                            margin: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.white,
+                            ),
+
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  "images/headphones.png",
+                                  width: 120,
+                                ),
+                                SizedBox(height: 5),
+                                Text(
+                                  'Headphone',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 10),
+                                      child: Text(
+                                        '\$100',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ),
+
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: TextButton(
+                                        onPressed: () {},
+                                        style: TextButton.styleFrom(
+                                          backgroundColor: Colors.red,
+                                          minimumSize: Size(3, 5),
+                                        ),
+                                        child: Icon(
+                                          Icons.add,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -165,9 +222,47 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+class TextWidgets extends StatelessWidget {
+  String blackText;
+  String redText;
+
+  // this is a constructor
+  TextWidgets({required this.blackText, required this.redText});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10, right: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            blackText,
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+              fontSize: 20,
+            ),
+          ),
+
+          Text(
+            redText,
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: Colors.red,
+              fontSize: 20,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class categorieCard extends StatelessWidget {
   String image;
-
+  // this is a constructor
   categorieCard({super.key, required this.image});
   @override
   Widget build(BuildContext context) {
