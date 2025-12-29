@@ -1,3 +1,5 @@
+import 'package:ecommerce_app/pages/buttom_nav.dart';
+import 'package:ecommerce_app/pages/see_all_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -92,7 +94,11 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
 
-            TextWidgets(blackText: 'Categories', redText: 'See all'),
+            TextWidgets(
+              blackText: 'Categories',
+              redText: 'See all',
+              clickAble: false,
+            ),
 
             Row(
               children: [
@@ -133,13 +139,16 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
 
-            TextWidgets(blackText: 'All products', redText: 'See all'),
+            TextWidgets(
+              blackText: 'All products',
+              redText: 'See all',
+              clickAble: true,
+            ),
 
             Container(
-              margin: EdgeInsets.only(top: 20, left: 10, right: 10),
+              margin: EdgeInsets.only(top: 10, left: 10, right: 10),
               width: double.infinity,
               height: 250,
-              color: Color.fromARGB(255, 0, 0, 255),
               child: Row(
                 children: [
                   Expanded(
@@ -173,7 +182,8 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 SizedBox(height: 5),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
 
                                   children: [
                                     Padding(
@@ -217,16 +227,23 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+      
     );
+    
   }
 }
 
 class TextWidgets extends StatelessWidget {
   String blackText;
   String redText;
+  bool clickAble;
 
   // this is a constructor
-  TextWidgets({required this.blackText, required this.redText});
+  TextWidgets({
+    required this.blackText,
+    required this.redText,
+    required this.clickAble,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -245,12 +262,21 @@ class TextWidgets extends StatelessWidget {
             ),
           ),
 
-          Text(
-            redText,
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: Colors.red,
-              fontSize: 20,
+          GestureDetector(
+            onTap: () {
+              if (clickAble) {
+                Navigator.of(
+                  context,
+                ).push(MaterialPageRoute(builder: (context) => SeeAllPage()));
+              }
+            },
+            child: Text(
+              redText,
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: Colors.red,
+                fontSize: 20,
+              ),
             ),
           ),
         ],
@@ -271,7 +297,7 @@ class CategorieCard extends StatelessWidget {
       width: 90,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(30),
       ),
       child: Column(
         children: [

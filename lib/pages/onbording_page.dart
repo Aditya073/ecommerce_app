@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/pages/buttom_nav.dart';
 import 'package:ecommerce_app/pages/home_page.dart';
 import 'package:flutter/material.dart';
 
@@ -40,7 +41,7 @@ class _OnbordingPageState extends State<OnbordingPage> {
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => HomePage()),
+                        MaterialPageRoute(builder: (context) => ButtomNav()),
                       );
                     },
                     style: TextButton.styleFrom(
