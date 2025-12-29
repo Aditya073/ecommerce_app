@@ -34,9 +34,9 @@ class _ButtomNavState extends State<ButtomNav> {
     return Scaffold(
       bottomNavigationBar: CurvedNavigationBar(
         height: 65,
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xfff2f2f2),
         color: Colors.black,
-        animationDuration: Duration(microseconds: 500),
+        animationDuration: Duration(microseconds: 12000),
         onTap: (int index) {
           setState(() {
             currentTabIndex = index;

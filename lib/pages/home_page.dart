@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/pages/buttom_nav.dart';
+import 'package:ecommerce_app/pages/product_details.dart';
 import 'package:ecommerce_app/pages/see_all_page.dart';
 import 'package:flutter/material.dart';
 
@@ -21,6 +22,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: Color.fromARGB(255, 199, 198, 198),
       backgroundColor: Color(0xfff2f2f2),
       body: SafeArea(
         child: Column(
@@ -158,63 +160,80 @@ class _HomePageState extends State<HomePage> {
                         itemCount: 5,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            width: 190,
-                            margin: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.white,
-                            ),
 
-                            child: Column(
-                              children: [
-                                Image.asset(
-                                  "images/headphones.png",
-                                  width: 120,
+
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => ProductDetails(image: "images/headphones.png", name: "Headphone", price: 100,),
                                 ),
-                                SizedBox(height: 5),
-                                Text(
-                                  'Headphone',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 18,
+                              );
+                            },
+                          
+                          
+                            child: Container(
+                              width: 190,
+                              margin: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.white,
+                              ),
+
+                              child: Column(
+                                children: [
+                                  Image.asset(
+                                    "images/headphones.png",
+                                    width: 120,
                                   ),
-                                ),
-                                SizedBox(height: 5),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  SizedBox(height: 5),
+                                  Text(
+                                    'Headphone',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(height: 5),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
 
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      child: Text(
-                                        '\$100',
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 18,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 10,
+                                        ),
+                                        child: Text(
+                                          '\$100',
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 18,
+                                          ),
                                         ),
                                       ),
-                                    ),
 
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 10),
-                                      child: TextButton(
-                                        onPressed: () {},
-                                        style: TextButton.styleFrom(
-                                          backgroundColor: Colors.red,
-                                          minimumSize: Size(3, 5),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          right: 10,
                                         ),
-                                        child: Icon(
-                                          Icons.add,
-                                          color: Colors.white,
+                                        child: TextButton(
+                                          onPressed: () {},
+                                          style: TextButton.styleFrom(
+                                            backgroundColor: Colors.red,
+                                            minimumSize: Size(3, 5),
+                                          ),
+                                          child: Icon(
+                                            Icons.add,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           );
                         },
@@ -227,9 +246,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      
     );
-    
   }
 }
 
