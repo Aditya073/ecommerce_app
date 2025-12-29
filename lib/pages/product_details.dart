@@ -146,9 +146,3 @@ class ProductDetails extends StatelessWidget {
     );
   }
 }
-// SizedBox(height: 30,),
-          // Text(name, style: TextStyle(
-          //   fontSize: 30,
-          //   fontWeight: FontWeight.w500,
-          //   fontStyle: FontStyle.italic
-          // ),)

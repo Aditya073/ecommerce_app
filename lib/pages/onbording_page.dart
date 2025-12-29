@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/pages/buttom_nav.dart';
 import 'package:ecommerce_app/pages/home_page.dart';
+import 'package:ecommerce_app/pages/login_page.dart';
 import 'package:flutter/material.dart';
 
 class OnbordingPage extends StatefulWidget {
@@ -41,7 +42,7 @@ class _OnbordingPageState extends State<OnbordingPage> {
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => ButtomNav()),
+                        MaterialPageRoute(builder: (context) => LoginPage()),
                       );
                     },
                     style: TextButton.styleFrom(

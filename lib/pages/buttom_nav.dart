@@ -2,6 +2,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:ecommerce_app/pages/Order.dart';
 import 'package:ecommerce_app/pages/Profile.dart';
 import 'package:ecommerce_app/pages/home_page.dart';
+import 'package:ecommerce_app/pages/login_page.dart';
 import 'package:flutter/material.dart';
 
 class ButtomNav extends StatefulWidget {
@@ -14,6 +15,7 @@ class ButtomNav extends StatefulWidget {
 class _ButtomNavState extends State<ButtomNav> {
   late List<Widget> pages;
 
+
   late HomePage homePage;
   late Order order;
   late Profile profile;
@@ -21,6 +23,7 @@ class _ButtomNavState extends State<ButtomNav> {
 
   @override
   void initState() {
+
     homePage = HomePage();
     order = Order();
     profile = Profile();
