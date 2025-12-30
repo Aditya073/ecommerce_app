@@ -20,7 +20,7 @@ class _SignUpState extends State<SignUp> {
   registration() async {
     if (newUseName != null && newUseEmailID != null && newUsePassword != null) {
       try {
-        UserCredential userCredential = await FirebaseAuth.instance
+        await FirebaseAuth.instance
             .createUserWithEmailAndPassword(
               email: newUseEmailID.text.trim(),
               password: newUsePassword.text.trim(),
@@ -89,7 +89,6 @@ class _SignUpState extends State<SignUp> {
                   child: Text(
                     'Sign Up',
                     style: TextStyle(
-                      // decoration: TextDecoration.none,
                       color: Colors.black,
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -103,7 +102,6 @@ class _SignUpState extends State<SignUp> {
                   child: Text(
                     'please enter the details below to \n                   continue.',
                     style: TextStyle(
-                      // decoration: TextDecoration.none,
                       color: Colors.grey,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -116,7 +114,6 @@ class _SignUpState extends State<SignUp> {
                 Text(
                   'Name',
                   style: TextStyle(
-                    // decoration: TextDecoration.none,
                     color: Colors.black,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -216,22 +213,6 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
 
-                // Padding(
-                //   padding: const EdgeInsets.all(10.0),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.end,
-                //     children: [
-                //       Text(
-                //         'Forgot Password?',
-                //         style: TextStyle(
-                //           color: Colors.green,
-                //           fontWeight: FontWeight.bold,
-                //           fontSize: 16,
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
                 SizedBox(height: 10),
                 Center(
                   child: TextButton(
