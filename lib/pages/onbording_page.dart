@@ -17,7 +17,7 @@ class _OnbordingPageState extends State<OnbordingPage> {
       backgroundColor: Color.fromARGB(255, 213, 213, 212), //Color(0xffecefe8)
       body: Column(
         children: [
-          SizedBox(height: 30),
+          SizedBox(height: 50),
           Image.asset("images/headphones.png"),
           SizedBox(height: 10),
 
@@ -32,7 +32,7 @@ class _OnbordingPageState extends State<OnbordingPage> {
               ],
             ),
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 30),
 
           Padding(
             padding: const EdgeInsets.only(right: 10.0),
