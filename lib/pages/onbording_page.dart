@@ -15,53 +15,52 @@ class _OnbordingPageState extends State<OnbordingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 213, 213, 212), //Color(0xffecefe8)
-      body: SafeArea(
-        child: Column(
-          children: [
-            Image.asset("images/headphones.png"),
-            SizedBox(height: 10),
+      body: Column(
+        children: [
+          SizedBox(height: 30),
+          Image.asset("images/headphones.png"),
+          SizedBox(height: 10),
 
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                children: [
-                  Text(
-                    'Explore\nThe best\nProducts',
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 42),
-                  ),
-                ],
-              ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              children: [
+                Text(
+                  'Explore\nThe best\nProducts',
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 42),
+                ),
+              ],
             ),
-            SizedBox(height: 20),
+          ),
+          SizedBox(height: 20),
 
-            Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => LoginPage()),
-                      );
-                    },
-                    style: TextButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 0, 0, 0),
-                      padding: EdgeInsets.all(30),
-                    ),
-                    child: Text(
-                      'Next',
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 229, 229, 229),
-                        fontSize: 22,
-                      ),
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                    );
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 0, 0, 0),
+                    padding: EdgeInsets.all(30),
+                  ),
+                  child: Text(
+                    'Next',
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 229, 229, 229),
+                      fontSize: 22,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
