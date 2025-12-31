@@ -1,7 +1,13 @@
-import 'package:ecommerce_app/pages/buttom_nav.dart';
-import 'package:ecommerce_app/pages/login_page.dart';
+import 'dart:math';
+
+import 'package:ecommerce_app/home_page/buttom_nav.dart';
+import 'package:ecommerce_app/login&signUp_page/login_page.dart';
+import 'package:ecommerce_app/services/database.dart';
+import 'package:ecommerce_app/services/shared_pref.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:random_string/random_string.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUp extends StatefulWidget {
   SignUp({super.key});
@@ -20,11 +26,10 @@ class _SignUpState extends State<SignUp> {
   registration() async {
     if (newUseName != null && newUseEmailID != null && newUsePassword != null) {
       try {
-        await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(
-              email: newUseEmailID.text.trim(),
-              password: newUsePassword.text.trim(),
-            );
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: newUseEmailID.text.trim(),
+          password: newUsePassword.text.trim(),
+        );
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -35,6 +40,23 @@ class _SignUpState extends State<SignUp> {
             ),
           ),
         );
+        String id = randomAlphaNumeric(10);
+
+        await SharedPref().saveUserId(id);
+        await SharedPref().saveUserEmail(newUseEmailID.text);
+        await SharedPref().saveUserName(newUseName.text);
+        await SharedPref().saveUserImage('images/profile_image.avif');
+
+
+        Map<String, dynamic> userInfoMap = {
+          "Name": newUseName.text.trim(),
+          "Email": newUseEmailID.text.trim(),
+          "Id": id,
+          "Image": 'images/profile_image.avif',
+          // "Password": newUsePassword.text.trim(),
+        };
+
+        await DatabaseMethods().addUsersDetails(userInfoMap, id);
 
         Navigator.of(
           context,

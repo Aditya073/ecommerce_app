@@ -1,5 +1,5 @@
-import 'package:ecommerce_app/pages/buttom_nav.dart';
-import 'package:ecommerce_app/pages/sign_up.dart';
+import 'package:ecommerce_app/home_page/buttom_nav.dart';
+import 'package:ecommerce_app/login&signUp_page/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

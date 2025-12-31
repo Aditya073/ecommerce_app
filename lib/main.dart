@@ -1,5 +1,5 @@
-import 'package:ecommerce_app/firebase_options.dart';
-import 'package:ecommerce_app/pages/onbording_page.dart';
+import 'package:ecommerce_app/login&signUp_page/firebase_options.dart';
+import 'package:ecommerce_app/home_page/onbording_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 

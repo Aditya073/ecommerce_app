@@ -1,6 +1,6 @@
-import 'package:ecommerce_app/pages/buttom_nav.dart';
-import 'package:ecommerce_app/pages/home_page.dart';
-import 'package:ecommerce_app/pages/login_page.dart';
+import 'package:ecommerce_app/home_page/buttom_nav.dart';
+import 'package:ecommerce_app/home_page/home_page.dart';
+import 'package:ecommerce_app/login&signUp_page/login_page.dart';
 import 'package:flutter/material.dart';
 
 class OnbordingPage extends StatefulWidget {

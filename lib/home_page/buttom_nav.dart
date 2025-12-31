@@ -1,8 +1,8 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:ecommerce_app/pages/Order.dart';
 import 'package:ecommerce_app/pages/Profile.dart';
-import 'package:ecommerce_app/pages/home_page.dart';
-import 'package:ecommerce_app/pages/login_page.dart';
+import 'package:ecommerce_app/home_page/home_page.dart';
+import 'package:ecommerce_app/login&signUp_page/login_page.dart';
 import 'package:flutter/material.dart';
 
 class ButtomNav extends StatefulWidget {
