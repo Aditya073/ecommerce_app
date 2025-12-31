@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/Admin/admin_login_page.dart';
 import 'package:ecommerce_app/home_page/buttom_nav.dart';
 import 'package:ecommerce_app/home_page/home_page.dart';
 import 'package:ecommerce_app/login&signUp_page/login_page.dart';
@@ -42,7 +43,7 @@ class _OnbordingPageState extends State<OnbordingPage> {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => LoginPage()),
+                      MaterialPageRoute(builder: (context) => AdminLoginPage()),
                     );
                   },
                   style: TextButton.styleFrom(
