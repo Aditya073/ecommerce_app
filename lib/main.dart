@@ -17,4 +17,4 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(debugShowCheckedModeBanner: false, home: AddProduct());
   }
-}                                            // 3:05:08
+}                                            // 3:50:08

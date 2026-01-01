@@ -8,4 +8,10 @@ class DatabaseMethods {
         .doc(id)
         .set(userInfoMap);
   }
+
+   Future addProduct(Map<String, dynamic> productInfo) async {
+    return FirebaseFirestore.instance
+        .collection("products")
+        .add(productInfo);
+  }
 }
