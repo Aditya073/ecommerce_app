@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/Admin/add_product.dart';
 import 'package:ecommerce_app/login&signUp_page/firebase_options.dart';
 import 'package:ecommerce_app/home_page/onbording_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -14,6 +15,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: OnbordingPage());
+    return MaterialApp(debugShowCheckedModeBanner: false, home: AddProduct());
   }
-}                                            // 2:32:00
+}                                            // 3:05:08
