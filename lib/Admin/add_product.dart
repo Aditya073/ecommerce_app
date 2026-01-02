@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:ecommerce_app/services/database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:random_string/random_string.dart';
 
 class AddProduct extends StatefulWidget {
   const AddProduct({super.key});
@@ -18,14 +20,101 @@ class _AddProductState extends State<AddProduct> {
   String? base64Image;
 
   Future<void> getImage() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+  final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
-    if (image != null) {
-      setState(() {
-        selectedImage = File(image.path);
-      });
-    }
+  if (image != null) {
+    final bytes = await image.readAsBytes();
+    setState(() {
+      base64Image = base64Encode(bytes);
+      selectedImage = File(image.path); // optional (preview)
+    });
   }
+}
+
+
+//   uplodeItem() async {
+//   if (selectedImage == null) {
+//     ScaffoldMessenger.of(context).showSnackBar(
+//       SnackBar(content: Text("Please select an image")),
+//     );
+//     return;
+//   }
+
+//   if (newProductName.text.trim().isEmpty) {
+//     ScaffoldMessenger.of(context).showSnackBar(
+//       SnackBar(content: Text("Please enter product name")),
+//     );
+//     return;
+//   }
+
+//   if (value == null) {
+//     ScaffoldMessenger.of(context).showSnackBar(
+//       SnackBar(content: Text("Please select a category")),
+//     );
+//     return;
+//   }
+
+//   String addId = randomAlphaNumeric(10);
+
+//   Reference firebaseStorageRef = FirebaseStorage.instance
+//       .ref()
+//       .child("blogImage")
+//       .child(addId);
+
+//   UploadTask task = firebaseStorageRef.putFile(selectedImage!);
+//   String downloadUrl = await (await task).ref.getDownloadURL();
+
+//   Map<String, dynamic> addProduct = {
+//     "Name": newProductName.text.trim(),
+//     "Image": downloadUrl,
+//   };
+
+//   await DatabaseMethods().addProduct(addProduct, value!);
+
+//   setState(() {
+//     selectedImage = null;
+//     newProductName.clear();
+//     value = null;
+//   });
+
+//   ScaffoldMessenger.of(context).showSnackBar(
+//     SnackBar(
+//       backgroundColor: Colors.green,
+//       content: Text("Product added successfully"),
+//     ),
+//   );
+// }
+
+
+uplodeItem() async {
+  if (base64Image == null ||
+      newProductName.text.trim().isEmpty ||
+      value == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Fill all fields")),
+    );
+    return;
+  }
+
+  Map<String, dynamic> product = {
+    "name": newProductName.text.trim(),
+    "imageBase64": base64Image,
+    "Price": newProductPrice.text.trim(),
+    "Detail": newProductDetails.text.trim(),
+    "category": value,
+  };
+
+  await DatabaseMethods().addProduct(product, value!);
+
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      backgroundColor: Colors.green,
+      content: Text("Product added successfully"),
+    ),
+  );
+}
+
+
 
   List<String> categoryItem = ['Watch', 'Tv', 'Laptop', 'Phone'];
 
@@ -222,25 +311,8 @@ class _AddProductState extends State<AddProduct> {
                 padding: const EdgeInsets.only(top: 20),
                 child: Center(
                   child: ElevatedButton(
-                    onPressed: () async {
-                      if (base64Image == null || value == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Please fill all fields")),
-                        );
-                        return;
-                      }
-
-                      Map<String, dynamic> productData = {
-                        "name": newProductName.text.trim(),
-                        "category": value,
-                        "image": base64Image, // 👈 stored here
-                      };
-
-                      await DatabaseMethods().addProduct(productData);
-
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text("Product Added")));
+                    onPressed: () {
+                      uplodeItem();
                     },
                     child: Text('Add Product', style: TextStyle(fontSize: 20)),
                   ),

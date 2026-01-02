@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/Admin/add_product.dart';
 import 'package:flutter/material.dart';
 
 class AdminHomePage extends StatefulWidget {
@@ -13,13 +14,25 @@ class _AdminHomePageState extends State<AdminHomePage> {
     return Scaffold(
       body: Column(
         children: [
-          SizedBox(height: 100,),
+          SizedBox(height: 100),
 
-          Text('Hiiiiiiiiiiiiiiiii', style: TextStyle(
-            fontSize: 40,
-            fontWeight: FontWeight.bold
-          ),)
-
+          Center(
+            child: Text(
+              'Hiiiiiiiiiiiiiiiii',
+              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+            ),
+          ),
+          SizedBox(height: 30),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.of(
+                  context,
+                ).push(MaterialPageRoute(builder: (context) => AddProduct()));
+              },
+              child: Text('Add Products'),
+            ),
+          ),
         ],
       ),
     );

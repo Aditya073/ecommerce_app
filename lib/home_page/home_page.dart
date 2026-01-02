@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/home_page/buttom_nav.dart';
+import 'package:ecommerce_app/pages/category_detail.dart';
 import 'package:ecommerce_app/pages/product_details.dart';
 import 'package:ecommerce_app/pages/see_all_page.dart';
 import 'package:flutter/material.dart';
@@ -133,7 +134,17 @@ class _HomePageState extends State<HomePage> {
                       scrollDirection: Axis.horizontal,
                       itemCount: categories.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return CategorieCard(image: categories[index]);
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CategoryDetail(),
+                              ),
+                            );
+                          },
+                          child: CategorieCard(image: categories[index]),
+                        );
                       },
                     ),
                   ),
@@ -160,18 +171,19 @@ class _HomePageState extends State<HomePage> {
                         itemCount: 5,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (BuildContext context, int index) {
-
-
                           return GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => ProductDetails(image: "images/headphones.png", name: "Headphone", price: 100,),
+                                  builder: (context) => ProductDetails(
+                                    image: "images/headphones.png",
+                                    name: "Headphone",
+                                    price: 100,
+                                  ),
                                 ),
                               );
                             },
-                          
-                          
+
                             child: Container(
                               width: 190,
                               margin: EdgeInsets.all(10),
