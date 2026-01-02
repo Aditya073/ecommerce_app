@@ -13,10 +13,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List categories = [
-    "images/headphones.png",
-    "images/laptop_.png",
-    "images/phone_.jpg",
-    "images/tv_.jpg",
+    "images/headphone_icon.png",
+    "images/laptop_icon.png",
+    "images/mobile_icon.png",
+    "images/tv_icon.png",
+    "images/watch_icon.png",
   ];
   bool? isSelected;
 
