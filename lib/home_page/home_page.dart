@@ -15,9 +15,10 @@ class _HomePageState extends State<HomePage> {
   List categories = [
     // "images/headphone_icon.png",
     "images/laptop_icon.png",
+    "images/watch_icon.png",
     "images/mobile_icon.png",
     "images/tv_icon.png",
-    "images/watch_icon.png",
+    
   ];
 
   List categoryName = [
@@ -46,14 +47,14 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     children: [
                       Text(
-                        'Hey, Aditya',
+                        'Hey, Aditya',                  // User name
                         style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       Text(
-                        'Good Morning',
+                        'Welcome', 
                         style: TextStyle(
                           color: Colors.grey,
                           fontSize: 20,
@@ -64,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
 
-                Container(
+                Container(                       // profile image
                   margin: EdgeInsets.only(right: 10),
                   child: ClipRRect(
                     borderRadius: BorderRadiusGeometry.circular(20),
@@ -79,7 +80,7 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
 
-            Container(
+            Container(               // Search bar
               margin: EdgeInsets.only(right: 20, left: 20, top: 30, bottom: 20),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -112,7 +113,7 @@ class _HomePageState extends State<HomePage> {
               clickAble: false,
             ),
 
-            Row(
+            Row(                              // list of categories
               children: [
                 Container(
                   margin: EdgeInsets.all(10),
@@ -136,14 +137,16 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
-                Expanded(
+
+
+                Expanded(                 // list of categories
                   child: SizedBox(
                     height: 150,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: categories.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
+                        return GestureDetector(    // whenever any of the category is selected "CategoryDetail" class is called
                           onTap: () {
                             Navigator.push(
                               context,
@@ -153,7 +156,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             );
                           },
-                          child: CategorieCard(
+                          child: CategorieCard(      // CategorieCard widget is called for each element in "List categories" 
                             image: categories[index],
                             name: categoryName[index],
                           ),
@@ -168,10 +171,10 @@ class _HomePageState extends State<HomePage> {
             TextWidgets(
               blackText: 'All products',
               redText: 'See all',
-              clickAble: true,
+              clickAble: true,            // this calles the "SeeAllPage" class (ts not completed yet)
             ),
 
-            Container(
+            Container(             // all the products that are in the app should be visiable here
               margin: EdgeInsets.only(top: 10, left: 10, right: 10),
               width: double.infinity,
               height: 250,
@@ -184,7 +187,9 @@ class _HomePageState extends State<HomePage> {
                         itemCount: 5,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (BuildContext context, int index) {
-                          return GestureDetector(
+
+
+                          return GestureDetector(  // on clicking on any of the product "ProductDetails" class is called
                             onTap: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(

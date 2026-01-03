@@ -12,9 +12,12 @@ class CategoryDetail extends StatefulWidget {
 }
 
 class _CategoryDetailState extends State<CategoryDetail> {
+   // Stream that continuously listens to Firestore product changes
   Stream? categoryStream;
 
-  getOnTheLoad() async {
+  // Called once when the page loads
+  // Fetches products of the selected category
+  Future<void> getOnTheLoad() async {
     categoryStream = await DatabaseMethods().getProducts(widget.category);
     setState(() {});
   }
@@ -25,7 +28,9 @@ class _CategoryDetailState extends State<CategoryDetail> {
     getOnTheLoad();
   }
 
-  Widget allProducts() {
+
+  
+  Widget allProducts() {        // Builds the product grid this is the main body
     return StreamBuilder(
       stream: categoryStream,
       builder: (context, AsyncSnapshot snapshot) {
@@ -33,7 +38,7 @@ class _CategoryDetailState extends State<CategoryDetail> {
           return const Center(child: CircularProgressIndicator());
         }
 
-        return GridView.builder(
+        return GridView.builder(          // Grid layout (2 items per row)
           padding: const EdgeInsets.all(12),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
@@ -54,16 +59,16 @@ class _CategoryDetailState extends State<CategoryDetail> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // IMAGE
-                  ClipRRect(
-                    borderRadius:
-                        const BorderRadius.vertical(top: Radius.circular(16)),
+                  ClipRRect(       // product image
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(16),
+                    ),
                     child: imageBase64 == null
                         ? const SizedBox(
                             height: 150,
                             child: Icon(Icons.image_not_supported),
                           )
-                        : Image.memory(
+                        : Image.memory(      // Convert base64 string to image
                             base64Decode(imageBase64),
                             height: 150,
                             width: double.infinity,
@@ -71,13 +76,14 @@ class _CategoryDetailState extends State<CategoryDetail> {
                           ),
                   ),
 
-                  // CONTENT
+
+
                   Padding(
                     padding: const EdgeInsets.all(10),
-                    child: Column(
+                    child: Column(                        // product details
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        Text(                        // product name                
                           ds['name'] ?? '',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -86,13 +92,13 @@ class _CategoryDetailState extends State<CategoryDetail> {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        const SizedBox(height: 6),
+                        const SizedBox(height: 15),
 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              "₹${ds['Price']}",
+                            Text(                        // product price
+                              "\$${ds['Price']}",
                               style: const TextStyle(
                                 color: Colors.red,
                                 fontWeight: FontWeight.bold,
@@ -131,19 +137,19 @@ class _CategoryDetailState extends State<CategoryDetail> {
     );
   }
 
-  @override
+  @override                             // App barrrrr
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xfff2f2f2),
       appBar: AppBar(
         backgroundColor: const Color(0xfff2f2f2),
         elevation: 0,
-        leading: IconButton(
+        leading: IconButton(             // back icon
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(
-          widget.category,
+        title: Text(                     // text on the app bar 
+          widget.category,              // based on the selected category
           style: const TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
@@ -151,7 +157,7 @@ class _CategoryDetailState extends State<CategoryDetail> {
         ),
         centerTitle: true,
       ),
-      body: allProducts(),
+      body: allProducts(),                 // the main body of the page 
     );
   }
 }
