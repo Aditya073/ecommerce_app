@@ -13,11 +13,19 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List categories = [
-    "images/headphone_icon.png",
+    // "images/headphone_icon.png",
     "images/laptop_icon.png",
     "images/mobile_icon.png",
     "images/tv_icon.png",
     "images/watch_icon.png",
+  ];
+
+  List categoryName = [
+    // "Headphone",
+    "Laptop",
+    "Phone",
+    "Tv",
+    "Watch",
   ];
   bool? isSelected;
 
@@ -140,11 +148,15 @@ class _HomePageState extends State<HomePage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => CategoryDetail(),
+                                builder: (context) =>
+                                    CategoryDetail(category: ''),
                               ),
                             );
                           },
-                          child: CategorieCard(image: categories[index]),
+                          child: CategorieCard(
+                            image: categories[index],
+                            name: categoryName[index],
+                          ),
                         );
                       },
                     ),
@@ -316,28 +328,38 @@ class TextWidgets extends StatelessWidget {
 }
 
 class CategorieCard extends StatelessWidget {
-  String image;
+  String image, name;
   // this is a constructor
-  CategorieCard({super.key, required this.image});
+  CategorieCard({required this.image, required this.name});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(10),
-      // height: 90,
-      width: 90,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 10, right: 5, left: 5),
-            child: Image.asset(image),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CategoryDetail(category: name),
           ),
-          const Spacer(),
-          Icon(Icons.arrow_forward),
-        ],
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.all(10),
+        // height: 90,
+        width: 90,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 10, right: 5, left: 5),
+              child: Image.asset(image),
+            ),
+            const Spacer(),
+            Icon(Icons.arrow_forward),
+          ],
+        ),
       ),
     );
   }

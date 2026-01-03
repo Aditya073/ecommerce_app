@@ -20,101 +20,101 @@ class _AddProductState extends State<AddProduct> {
   String? base64Image;
 
   Future<void> getImage() async {
-  final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
-  if (image != null) {
-    final bytes = await image.readAsBytes();
-    setState(() {
-      base64Image = base64Encode(bytes);
-      selectedImage = File(image.path); // optional (preview)
-    });
+    if (image != null) {
+      final bytes = await image.readAsBytes();
+      setState(() {
+        base64Image = base64Encode(bytes);
+        selectedImage = File(image.path); // optional (preview)
+      });
+    }
   }
-}
 
+  //   uplodeItem() async {
+  //   if (selectedImage == null) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text("Please select an image")),
+  //     );
+  //     return;
+  //   }
 
-//   uplodeItem() async {
-//   if (selectedImage == null) {
-//     ScaffoldMessenger.of(context).showSnackBar(
-//       SnackBar(content: Text("Please select an image")),
-//     );
-//     return;
-//   }
+  //   if (newProductName.text.trim().isEmpty) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text("Please enter product name")),
+  //     );
+  //     return;
+  //   }
 
-//   if (newProductName.text.trim().isEmpty) {
-//     ScaffoldMessenger.of(context).showSnackBar(
-//       SnackBar(content: Text("Please enter product name")),
-//     );
-//     return;
-//   }
+  //   if (value == null) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text("Please select a category")),
+  //     );
+  //     return;
+  //   }
 
-//   if (value == null) {
-//     ScaffoldMessenger.of(context).showSnackBar(
-//       SnackBar(content: Text("Please select a category")),
-//     );
-//     return;
-//   }
+  //   String addId = randomAlphaNumeric(10);
 
-//   String addId = randomAlphaNumeric(10);
+  //   Reference firebaseStorageRef = FirebaseStorage.instance
+  //       .ref()
+  //       .child("blogImage")
+  //       .child(addId);
 
-//   Reference firebaseStorageRef = FirebaseStorage.instance
-//       .ref()
-//       .child("blogImage")
-//       .child(addId);
+  //   UploadTask task = firebaseStorageRef.putFile(selectedImage!);
+  //   String downloadUrl = await (await task).ref.getDownloadURL();
 
-//   UploadTask task = firebaseStorageRef.putFile(selectedImage!);
-//   String downloadUrl = await (await task).ref.getDownloadURL();
+  //   Map<String, dynamic> addProduct = {
+  //     "Name": newProductName.text.trim(),
+  //     "Image": downloadUrl,
+  //   };
 
-//   Map<String, dynamic> addProduct = {
-//     "Name": newProductName.text.trim(),
-//     "Image": downloadUrl,
-//   };
+  //   await DatabaseMethods().addProduct(addProduct, value!);
 
-//   await DatabaseMethods().addProduct(addProduct, value!);
+  //   setState(() {
+  //     selectedImage = null;
+  //     newProductName.clear();
+  //     value = null;
+  //   });
 
-//   setState(() {
-//     selectedImage = null;
-//     newProductName.clear();
-//     value = null;
-//   });
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       backgroundColor: Colors.green,
+  //       content: Text("Product added successfully"),
+  //     ),
+  //   );
+  // }
 
-//   ScaffoldMessenger.of(context).showSnackBar(
-//     SnackBar(
-//       backgroundColor: Colors.green,
-//       content: Text("Product added successfully"),
-//     ),
-//   );
-// }
+  uplodeItem() async {
+    if (base64Image == null ||
+        newProductName.text.trim().isEmpty ||
+        value == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Fill all fields")));
+      return;
+    }
 
+    Map<String, dynamic> product = {
+      "name": newProductName.text.trim(),
+      "imageBase64": base64Image,
+      "Price": newProductPrice.text.trim(),
+      "Detail": newProductDetails.text.trim(),
+      "category": value,
+    };
 
-uplodeItem() async {
-  if (base64Image == null ||
-      newProductName.text.trim().isEmpty ||
-      value == null) {
+    await DatabaseMethods().addProduct(product, value!);
+
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Fill all fields")),
+      SnackBar(
+        backgroundColor: Colors.green,
+        content: Text("Product added successfully"),
+      ),
     );
-    return;
+
+    newProductDetails.text = "";
+    newProductName.text = "";
+    newProductPrice.text = "";
   }
-
-  Map<String, dynamic> product = {
-    "name": newProductName.text.trim(),
-    "imageBase64": base64Image,
-    "Price": newProductPrice.text.trim(),
-    "Detail": newProductDetails.text.trim(),
-    "category": value,
-  };
-
-  await DatabaseMethods().addProduct(product, value!);
-
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      backgroundColor: Colors.green,
-      content: Text("Product added successfully"),
-    ),
-  );
-}
-
-
 
   List<String> categoryItem = ['Watch', 'Tv', 'Laptop', 'Phone'];
 
