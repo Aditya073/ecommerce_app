@@ -1,109 +1,132 @@
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce_app/pages/product_details.dart';
 import 'package:ecommerce_app/services/database.dart';
 import 'package:flutter/material.dart';
 
 class CategoryDetail extends StatefulWidget {
-  String category;
-  CategoryDetail({required this.category});
+  final String category;
+  const CategoryDetail({super.key, required this.category});
 
   @override
   State<CategoryDetail> createState() => _CategoryDetailState();
 }
 
 class _CategoryDetailState extends State<CategoryDetail> {
-  Stream? CategoryStream;
+  Stream? categoryStream;
 
   getOnTheLoad() async {
-    CategoryStream = await DatabaseMethods().getProducts(widget.category);
+    categoryStream = await DatabaseMethods().getProducts(widget.category);
     setState(() {});
   }
 
   @override
   void initState() {
-    getOnTheLoad();
     super.initState();
+    getOnTheLoad();
   }
 
   Widget allProducts() {
     return StreamBuilder(
-      stream: CategoryStream,
+      stream: categoryStream,
       builder: (context, AsyncSnapshot snapshot) {
-        return snapshot.hasData
-            ? GridView.builder(
-                padding: EdgeInsets.zero,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.6,
-                  mainAxisSpacing: 10.0,
-                  crossAxisSpacing: 6.0,
-                ),
-                itemCount: snapshot.data.docs.length,
-                itemBuilder: (context, index) {
-                  DocumentSnapshot ds = snapshot.data.docs[index];
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-                  return Container(
-                    width: 190,
-                    margin: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
-                    ),
+        return GridView.builder(
+          padding: const EdgeInsets.all(12),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 0.65,
+            mainAxisSpacing: 12,
+            crossAxisSpacing: 12,
+          ),
+          itemCount: snapshot.data.docs.length,
+          itemBuilder: (context, index) {
+            DocumentSnapshot ds = snapshot.data.docs[index];
+            final imageBase64 = ds["imageBase64"];
 
+            return Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // IMAGE
+                  ClipRRect(
+                    borderRadius:
+                        const BorderRadius.vertical(top: Radius.circular(16)),
+                    child: imageBase64 == null
+                        ? const SizedBox(
+                            height: 150,
+                            child: Icon(Icons.image_not_supported),
+                          )
+                        : Image.memory(
+                            base64Decode(imageBase64),
+                            height: 150,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
+                  ),
+
+                  // CONTENT
+                  Padding(
+                    padding: const EdgeInsets.all(10),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Image.memory(
-                          base64Decode(ds["imageBase64"]),
-                          width: 120,
-                          height: 120,
-                          fit: BoxFit.cover,
-                        ),
-                        SizedBox(height: 5),
                         Text(
-                          ds['name'],
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 18,
+                          ds['name'] ?? '',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 6),
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Text(
-                                '\$' +ds['Price'],
-                                style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18,
-                                ),
+                            Text(
+                              "₹${ds['Price']}",
+                              style: const TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
                             ),
 
-                            Padding(
-                              padding: const EdgeInsets.only(right: 10),
-                              child: TextButton(
-                                onPressed: () {},
-                                style: TextButton.styleFrom(
-                                  backgroundColor: Colors.red,
-                                  minimumSize: Size(3, 5),
+                            // ADD BUTTON
+                            InkWell(
+                              onTap: () {},
+                              borderRadius: BorderRadius.circular(30),
+                              child: Container(
+                                padding: const EdgeInsets.all(6),
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.red,
                                 ),
-                                child: Icon(Icons.add, color: Colors.white),
+                                child: const Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
                               ),
                             ),
                           ],
                         ),
                       ],
                     ),
-                  );
-                },
-              )
-            : Container();
+                  ),
+                ],
+              ),
+            );
+          },
+        );
       },
     );
   }
@@ -111,13 +134,24 @@ class _CategoryDetailState extends State<CategoryDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xfff2f2f2),
-
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        child: Column(children: [Expanded(child: allProducts())]),
+      backgroundColor: const Color(0xfff2f2f2),
+      appBar: AppBar(
+        backgroundColor: const Color(0xfff2f2f2),
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          widget.category,
+          style: const TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
       ),
+      body: allProducts(),
     );
   }
 }

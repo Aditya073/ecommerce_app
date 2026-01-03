@@ -12,13 +12,13 @@ class ButtomNav extends StatefulWidget {
   State<ButtomNav> createState() => _ButtomNavState();
 }
 
-class _ButtomNavState extends State<ButtomNav> {
+class _ButtomNavState extends State<ButtomNav> {  // this file manages the flow of the user from home page, order page and Profile page
   late List<Widget> pages;
 
 
-  late HomePage homePage;
-  late Order order;
-  late Profile profile;
+  late HomePage homePage;  // HomePage class
+  late Order order;        // Order class
+  late Profile profile;    // Profile class
   int currentTabIndex = 0;
 
   @override
@@ -35,7 +35,9 @@ class _ButtomNavState extends State<ButtomNav> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: CurvedNavigationBar(
+
+
+      bottomNavigationBar: CurvedNavigationBar( // this is the buttom navigation bar 
         height: 65,
         backgroundColor: Color(0xfff2f2f2),
         color: Colors.black,
@@ -52,7 +54,9 @@ class _ButtomNavState extends State<ButtomNav> {
           Icon(Icons.person_2_outlined, color: Colors.white),
         ],
       ),
-      body: pages[currentTabIndex],
+
+
+      body: pages[currentTabIndex],  // body changes its state
     );
   }
 }
