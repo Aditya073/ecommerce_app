@@ -2,6 +2,7 @@ import 'package:ecommerce_app/home_page/buttom_nav.dart';
 import 'package:ecommerce_app/pages/category_detail.dart';
 import 'package:ecommerce_app/pages/product_details.dart';
 import 'package:ecommerce_app/pages/see_all_page.dart';
+import 'package:ecommerce_app/services/shared_pref.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,21 +19,39 @@ class _HomePageState extends State<HomePage> {
     "images/watch_icon.png",
     "images/mobile_icon.png",
     "images/tv_icon.png",
-    
   ];
 
   List categoryName = [
     // "Headphone",
     "Laptop",
+    "Watch",
     "Phone",
     "Tv",
-    "Watch",
   ];
   bool? isSelected;
 
+  String? name, image;
+
+  getTheSharedPres() async {
+    name = await SharedPref().getUserName();
+    image = await SharedPref().getUserImage();
+    setState(() {});
+  }
+
+  onTheLoad() async {
+    await getTheSharedPres();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    onTheLoad();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return name == null ? Center(child: CircularProgressIndicator()) : Scaffold(
       // backgroundColor: Color.fromARGB(255, 199, 198, 198),
       backgroundColor: Color(0xfff2f2f2),
       body: SafeArea(
@@ -47,14 +66,14 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     children: [
                       Text(
-                        'Hey, Aditya',                  // User name
+                        'Hey, '+ name!, // User name
                         style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       Text(
-                        'Welcome', 
+                        'Welcome',
                         style: TextStyle(
                           color: Colors.grey,
                           fontSize: 20,
@@ -65,7 +84,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
 
-                Container(                       // profile image
+                Container(
+                  // profile image
                   margin: EdgeInsets.only(right: 10),
                   child: ClipRRect(
                     borderRadius: BorderRadiusGeometry.circular(20),
@@ -80,7 +100,8 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
 
-            Container(               // Search bar
+            Container(
+              // Search bar
               margin: EdgeInsets.only(right: 20, left: 20, top: 30, bottom: 20),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -113,7 +134,8 @@ class _HomePageState extends State<HomePage> {
               clickAble: false,
             ),
 
-            Row(                              // list of categories
+            Row(
+              // list of categories
               children: [
                 Container(
                   margin: EdgeInsets.all(10),
@@ -138,15 +160,16 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
 
-
-                Expanded(                 // list of categories
+                Expanded(
+                  // list of categories
                   child: SizedBox(
                     height: 150,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: categories.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(    // whenever any of the category is selected "CategoryDetail" class is called
+                        return GestureDetector(
+                          // whenever any of the category is selected "CategoryDetail" class is called
                           onTap: () {
                             Navigator.push(
                               context,
@@ -156,7 +179,8 @@ class _HomePageState extends State<HomePage> {
                               ),
                             );
                           },
-                          child: CategorieCard(      // CategorieCard widget is called for each element in "List categories" 
+                          child: CategorieCard(
+                            // CategorieCard widget is called for each element in "List categories"
                             image: categories[index],
                             name: categoryName[index],
                           ),
@@ -171,10 +195,12 @@ class _HomePageState extends State<HomePage> {
             TextWidgets(
               blackText: 'All products',
               redText: 'See all',
-              clickAble: true,            // this calles the "SeeAllPage" class (ts not completed yet)
+              clickAble:
+                  true, // this calles the "SeeAllPage" class (ts not completed yet)
             ),
 
-            Container(             // all the products that are in the app should be visiable here
+            Container(
+              // all the products that are in the app should be visiable here
               margin: EdgeInsets.only(top: 10, left: 10, right: 10),
               width: double.infinity,
               height: 250,
@@ -187,16 +213,16 @@ class _HomePageState extends State<HomePage> {
                         itemCount: 5,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (BuildContext context, int index) {
-
-
-                          return GestureDetector(  // on clicking on any of the product "ProductDetails" class is called
+                          return GestureDetector(
+                            // on clicking on any of the product "ProductDetails" class is called
                             onTap: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) => ProductDetails(
                                     image: "images/headphones.png",
                                     name: "Headphone",
-                                    price: 100,
+                                    price: "100",
+                                    details: "Good product",
                                   ),
                                 ),
                               );

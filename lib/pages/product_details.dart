@@ -1,22 +1,23 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 class ProductDetails extends StatelessWidget {
   String image;
   String name;
-  int price;
+  String price;
+  String details;
 
   ProductDetails({
     super.key,
     required this.image,
     required this.name,
     required this.price,
+    required this.details,
   });
 
   @override
   Widget build(BuildContext context) {
-    String textttt =
-        "The product is very good. It have a 1 year waranty,These headphones are too good like you can also listen a person who is speaking loudly. But be aware of shivam he speaks very loudly ";
-
     return Container(
       color: Color(0xfff2f2f2),
       child: Column(
@@ -42,8 +43,21 @@ class ProductDetails extends StatelessWidget {
             ),
           ),
 
-          Center(child: Image.asset(image, height: 400)),
-
+          Center(
+            child: image == "images/headphones.png"
+                ? Image.asset(
+                    "images/headphones.png",
+                    height: 400,
+                    fit: BoxFit.cover,
+                  )
+                : Image.memory(
+                    // Convert base64 string to image
+                    base64Decode(image),
+                    height: 400,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+          ),
           Spacer(),
 
           Container(
@@ -105,7 +119,7 @@ class ProductDetails extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 15, right: 15),
                   child: Text(
-                    textttt,
+                    details,
                     style: TextStyle(
                       decoration: TextDecoration.none,
                       color: Colors.grey,
