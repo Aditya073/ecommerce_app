@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:ecommerce_app/services/constant.dart';
+import 'package:ecommerce_app/services/database.dart';
+import 'package:ecommerce_app/services/shared_pref.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -23,6 +25,25 @@ class ProductDetails extends StatefulWidget {
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
+  String? name, email;
+
+  Future<void> getTheSharedPres() async {
+    name = await SharedPref().getUserName();
+    email = await SharedPref().getUserEmail();
+    setState(() {});
+  }
+
+  Future<void> onTheLoad() async {
+    await getTheSharedPres();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    onTheLoad();
+    super.initState();
+  }
+
   Map<String, dynamic>? paymentIntent;
 
   @override
@@ -196,6 +217,16 @@ class _ProductDetailsState extends State<ProductDetails> {
       await Stripe.instance
           .presentPaymentSheet()
           .then((value) async {
+            Map<String, dynamic> orderInfoMap = {
+              'Product': widget.name,
+              'Price': widget.price,
+              'ProductImage': widget.image,
+              'Name': name,
+              'Email': email,
+            };
+           // this gives the FireBase all the info related to the product and the user who ordered it
+            await DatabaseMethods().orderDetails(orderInfoMap);
+
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
