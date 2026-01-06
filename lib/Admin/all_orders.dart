@@ -118,24 +118,6 @@ class _AllOrdersState extends State<AllOrders> {
                                       ),
                                     ),
                                   ),
-                                  // Container(
-                                  //   padding: const EdgeInsets.symmetric(
-                                  //     horizontal: 10,
-                                  //     vertical: 5,
-                                  //   ),
-                                  //   decoration: BoxDecoration(
-                                  //     color: Colors.orange.shade100,
-                                  //     borderRadius: BorderRadius.circular(20),
-                                  //   ),
-                                  //   child: Text(
-                                  //     ds['Status'],
-                                  //     style: TextStyle(
-                                  //       color: Colors.orange.shade800,
-                                  //       fontSize: 12,
-                                  //       fontWeight: FontWeight.w600,
-                                  //     ),
-                                  //   ),
-                                  // ),
                                   SizedBox(height: 5),
                                   Center(
                                     child: ElevatedButton(
