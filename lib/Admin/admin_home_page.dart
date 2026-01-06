@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/Admin/add_product.dart';
+import 'package:ecommerce_app/Admin/all_orders.dart';
 import 'package:flutter/material.dart';
 
 class AdminHomePage extends StatefulWidget {
@@ -31,6 +32,17 @@ class _AdminHomePageState extends State<AdminHomePage> {
                 ).push(MaterialPageRoute(builder: (context) => AddProduct()));
               },
               child: Text('Add Products'),
+            ),
+          ),
+          SizedBox(height: 30),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.of(
+                  context,
+                ).push(MaterialPageRoute(builder: (context) => AllOrders()));
+              },
+              child: Text('View Orders'),
             ),
           ),
         ],

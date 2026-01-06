@@ -46,73 +46,107 @@ class _OrderState extends State<Order> {
         }
 
         return ListView.builder(
-          // Grid layout (2 items per row)
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.only(left: 12, right: 12, top: 12),
 
           itemCount: snapshot.data.docs.length,
           itemBuilder: (context, index) {
             DocumentSnapshot ds = snapshot.data.docs[index];
-            final imageBase64 = ds["imageBase64"];
 
-            return Material(
-              elevation: 5,
-              borderRadius: BorderRadius.circular(20),
-              child: Container(
-                padding: EdgeInsets.only(
-                  left: 20,
-                  top: 10,
-                  right: 20,
-                  bottom: 10,
-                ),
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: Colors.white,
+            return Column(
+              children: [
+                Material(
+                  elevation: 5,
                   borderRadius: BorderRadius.circular(20),
-                ),
-                child: Column(
-                  children: [
-                    Row(
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      left: 20,
+                      top: 10,
+                      right: 20,
+                      bottom: 10,
+                    ),
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
                       children: [
-                        Image.memory(
-                            // Convert base64 string to image
-                          base64Decode(ds['ProductImage']),
-                          height: 120,
-                          width: 120,
-                          fit: BoxFit.cover,
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.only(left: 40),
-                          child: Column(
-                            children: [
-                              Text(
-                                ds['Product'],
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontStyle: FontStyle.italic,
-                                  fontWeight: FontWeight.w500,
+                        Row(
+                          children: [
+                            Image.memory(
+                              // Convert base64 string to image
+                              base64Decode(ds['ProductImage']),
+                              height: 120,
+                              width: 120,
+                              fit: BoxFit.cover,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 40),
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      ds['Product'],
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontStyle: FontStyle.italic,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 5),
+                                      child: Text(
+                                        '\$' + ds['Price'],
+                                        style: TextStyle(
+                                          color: Colors.green,
+                                          fontSize: 18,
+                                          fontStyle: FontStyle.italic,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 5),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 10,
+                                          vertical: 5,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: ds['Status'] == "Delivered"
+                                              ? Colors.orange.shade100
+                                              : Colors.greenAccent.shade100,
+                                          borderRadius: BorderRadius.circular(
+                                            20,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          'Status : ' + ds['Status'],
+                                          style: TextStyle(
+                                            color: ds['Status'] == "Delivered"
+                                                ? Colors.orange.shade800
+                                                : Colors.greenAccent.shade700,
+                                            fontSize: 14,
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.w300,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 5),
-                                child: Text(
-                                  '\$' + ds['Price'],
-                                  style: TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 16,
-                                    fontStyle: FontStyle.italic,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+                SizedBox(height: 25),
+              ],
             );
           },
         );
@@ -125,6 +159,7 @@ class _OrderState extends State<Order> {
     return Scaffold(
       backgroundColor: Color(0xfff2f2f2),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Color(0xfff2f2f2),
         title: Text(
           'Current Order',

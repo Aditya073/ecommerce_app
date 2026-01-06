@@ -223,6 +223,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               'ProductImage': widget.image,
               'Name': name,
               'Email': email,
+              'Status': 'On the way',
             };
            // this gives the FireBase all the info related to the product and the user who ordered it
             await DatabaseMethods().orderDetails(orderInfoMap);

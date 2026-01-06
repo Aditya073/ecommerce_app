@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/Admin/add_product.dart';
+import 'package:ecommerce_app/Admin/admin_home_page.dart';
 import 'package:ecommerce_app/Admin/admin_login_page.dart';
 import 'package:ecommerce_app/home_page/buttom_nav.dart';
 import 'package:ecommerce_app/login&signUp_page/firebase_options.dart';
@@ -25,6 +26,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: LoginPage());
+    return MaterialApp(debugShowCheckedModeBanner: false, home: ButtomNav());
   }
 }                                 // 5:13:00
