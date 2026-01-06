@@ -116,8 +116,8 @@ class _OrderState extends State<Order> {
                                         ),
                                         decoration: BoxDecoration(
                                           color: ds['Status'] == "Delivered"
-                                              ? Colors.orange.shade100
-                                              : Colors.greenAccent.shade100,
+                                              ? Colors.greenAccent.shade100
+                                              : Colors.orange.shade100,
                                           borderRadius: BorderRadius.circular(
                                             20,
                                           ),
@@ -126,8 +126,8 @@ class _OrderState extends State<Order> {
                                           'Status : ' + ds['Status'],
                                           style: TextStyle(
                                             color: ds['Status'] == "Delivered"
-                                                ? Colors.orange.shade800
-                                                : Colors.greenAccent.shade700,
+                                                ? Colors.greenAccent.shade700
+                                                : Colors.orange.shade800,
                                             fontSize: 14,
                                             fontStyle: FontStyle.italic,
                                             fontWeight: FontWeight.w300,
