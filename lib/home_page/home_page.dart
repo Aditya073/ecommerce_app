@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/home_page/buttom_nav.dart';
 import 'package:ecommerce_app/pages/category_detail.dart';
 import 'package:ecommerce_app/pages/product_details.dart';
 import 'package:ecommerce_app/pages/see_all_page.dart';
+import 'package:ecommerce_app/services/database.dart';
 import 'package:ecommerce_app/services/shared_pref.dart';
 import 'package:flutter/material.dart';
 
@@ -29,6 +31,39 @@ class _HomePageState extends State<HomePage> {
     "Tv",
   ];
   bool? isSelected;
+  bool search = false;
+  var quaryResultSet = [];
+  var tempSearchStore = [];
+
+  initiateSearch(value) {
+    if (value.length == 0) {
+      setState(() {
+        quaryResultSet = [];
+        tempSearchStore = [];
+      });
+    }
+    setState(() {
+      search = true;
+    });
+    var capitalizedValue = value.substring() + value.substring(1);
+    if (quaryResultSet.isEmpty && value.length == 1) {
+      DatabaseMethods().search(value).then((QuerySnapshot docs) {
+        for (int i = 0; i < docs.docs.length; ++i) {
+          quaryResultSet.add(docs.docs[i].data());
+        }
+      });
+    } else {
+      tempSearchStore = [];
+      for (var element in quaryResultSet) {
+        if (element['UpdatedName'].startsWith(capitalizedValue)) {
+          setState(() {
+            tempSearchStore.add(element);
+          });
+        }
+      }
+    }
+    
+  }
 
   String? name, image;
 
@@ -115,6 +150,9 @@ class _HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: TextField(
+                      onChanged: (value) {
+                        initiateSearch(value);
+                      },
                       decoration: InputDecoration(
                         border: OutlineInputBorder(borderSide: BorderSide.none),
                         prefixIcon: Icon(

@@ -93,17 +93,20 @@ class _AddProductState extends State<AddProduct> {
       ).showSnackBar(SnackBar(content: Text("Fill all fields")));
       return;
     }
+    String firstLetter = newProductName.text.substring(0, 1).toUpperCase();
 
     Map<String, dynamic> product = {
       "name": newProductName.text.trim(),
       "imageBase64": base64Image,
+      "SearchKey": firstLetter,
+      "UpdatedName": newProductName.text.toUpperCase(),
       "Price": newProductPrice.text.trim(),
       "Detail": newProductDetails.text.trim(),
       "category": value,
     };
 
     await DatabaseMethods().addProduct(product, value!);
-
+    await DatabaseMethods().addAllProducts(product);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: Colors.green,
