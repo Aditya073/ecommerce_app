@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/home_page/buttom_nav.dart';
 import 'package:ecommerce_app/pages/category_detail.dart';
@@ -35,34 +37,38 @@ class _HomePageState extends State<HomePage> {
   var quaryResultSet = [];
   var tempSearchStore = [];
 
-  initiateSearch(value) {
-    if (value.length == 0) {
+  void initiateSearch(String value) {
+    if (value.isEmpty) {
+      // User has not typed anything
       setState(() {
-        quaryResultSet = [];
-        tempSearchStore = [];
+        search = false;
+        quaryResultSet.clear();
+        tempSearchStore.clear();
       });
+      return;
     }
+
     setState(() {
       search = true;
     });
-    var capitalizedValue = value.substring() + value.substring(1);
+
+    String searchKey = value
+        .toUpperCase(); // this stores the value that user has typed
+
     if (quaryResultSet.isEmpty && value.length == 1) {
-      DatabaseMethods().search(value).then((QuerySnapshot docs) {
-        for (int i = 0; i < docs.docs.length; ++i) {
-          quaryResultSet.add(docs.docs[i].data());
-        }
+      DatabaseMethods().search(searchKey).then((QuerySnapshot docs) {
+        setState(() {
+          quaryResultSet = docs.docs.map((e) => e.data()).toList();
+          tempSearchStore = quaryResultSet;
+        });
       });
     } else {
-      tempSearchStore = [];
-      for (var element in quaryResultSet) {
-        if (element['UpdatedName'].startsWith(capitalizedValue)) {
-          setState(() {
-            tempSearchStore.add(element);
-          });
-        }
-      }
+      setState(() {
+        tempSearchStore = quaryResultSet.where((element) {
+          return element['UpdatedName'].toString().startsWith(searchKey);
+        }).toList();
+      });
     }
-    
   }
 
   String? name, image;
@@ -91,250 +97,158 @@ class _HomePageState extends State<HomePage> {
         : Scaffold(
             // backgroundColor: Color.fromARGB(255, 199, 198, 198),
             backgroundColor: Color(0xfff2f2f2),
-            body: SafeArea(
-              child: Column(
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(left: 10),
-                        child: Column(
-                          children: [
-                            Text(
-                              'Hey, ' + name!, // User name
-                              style: TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.w600,
+            body: SingleChildScrollView(
+              child: SafeArea(
+                child: Column(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left: 10),
+                          child: Column(
+                            children: [
+                              Text(
+                                'Hey, ' + name!, // User name
+                                style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                            Text(
-                              'Welcome',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
+                              Text(
+                                'Welcome',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      Container(
-                        // profile image
-                        margin: EdgeInsets.only(right: 20),
-                        child: Container(
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            color: Color(0xfff2f2f2),
-                            border: Border.all(width: 2),
-                            borderRadius: BorderRadius.circular(25),
+                            ],
                           ),
-                          child: Icon(Icons.person, size: 50),
                         ),
-                      ),
-                    ],
-                  ),
 
-                  Container(
-                    // Search bar
-                    margin: EdgeInsets.only(
-                      right: 20,
-                      left: 20,
-                      top: 30,
-                      bottom: 20,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: TextField(
-                      onChanged: (value) {
-                        initiateSearch(value);
-                      },
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(borderSide: BorderSide.none),
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Colors.grey,
-                          size: 20,
-                          fontWeight: FontWeight.w500,
+                        Container(
+                          // profile image
+                          margin: EdgeInsets.only(right: 20),
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: Color(0xfff2f2f2),
+                              border: Border.all(width: 2),
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            child: Icon(Icons.person, size: 50),
+                          ),
                         ),
-                        hint: Text(
-                          'Search products',
-                          style: TextStyle(
+                      ],
+                    ),
+
+                    Container(
+                      // Search bar
+                      margin: EdgeInsets.only(
+                        right: 20,
+                        left: 20,
+                        top: 30,
+                        bottom: 20,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: TextField(
+                        onChanged: (value) {
+                          initiateSearch(value);
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
+                          prefixIcon: Icon(
+                            Icons.search,
                             color: Colors.grey,
-                            fontSize: 20,
+                            size: 20,
                             fontWeight: FontWeight.w500,
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  TextWidgets(
-                    blackText: 'Categories',
-                    redText: 'See all',
-                    clickAble: false,
-                  ),
-
-                  Row(
-                    // list of categories
-                    children: [
-                      Container(
-                        margin: EdgeInsets.all(10),
-                        height: 150,
-                        width: 90,
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'All',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white,
-                              ),
+                          hint: Text(
+                            'Search products',
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
                             ),
-                          ],
-                        ),
-                      ),
-
-                      Expanded(
-                        // list of categories
-                        child: SizedBox(
-                          height: 150,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: categories.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return GestureDetector(
-                                // whenever any of the category is selected "CategoryDetail" class is called
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          CategoryDetail(category: ''),
-                                    ),
-                                  );
-                                },
-                                child: CategorieCard(
-                                  // CategorieCard widget is called for each element in "List categories"
-                                  image: categories[index],
-                                  name: categoryName[index],
-                                ),
-                              );
-                            },
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
 
-                  TextWidgets(
-                    blackText: 'All products',
-                    redText: 'See all',
-                    clickAble:
-                        true, // this calles the "SeeAllPage" class (ts not completed yet)
-                  ),
+                    search
+                        ? ListView(
+                            padding: EdgeInsets.only(left: 10, right: 10),
+                            primary: false,
+                            shrinkWrap: true,
+                            children: tempSearchStore.map((element) {
+                              return builtResultCard(element);
+                            }).toList(),
+                          )
+                        : Container(
+                            margin: EdgeInsets.all(10),
+                            child: TextWidgets(
+                              blackText: 'Categories',
+                              redText: 'See all',
+                              clickAble: false,
+                            ),
+                          ),
 
-                  Container(
-                    // all the products that are in the app should be visiable here
-                    margin: EdgeInsets.only(top: 10, left: 10, right: 10),
-                    width: double.infinity,
-                    height: 250,
-                    child: Row(
+                    Row(
+                      // list of categories
                       children: [
+                        Container(
+                          margin: EdgeInsets.all(10),
+                          height: 150,
+                          width: 90,
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'All',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
                         Expanded(
+                          // list of categories
                           child: SizedBox(
-                            height: 230,
+                            height: 150,
                             child: ListView.builder(
-                              itemCount: 5,
                               scrollDirection: Axis.horizontal,
+                              itemCount: categories.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return GestureDetector(
-                                  // on clicking on any of the product "ProductDetails" class is called
+                                  // whenever any of the category is selected "CategoryDetail" class is called
                                   onTap: () {
-                                    Navigator.of(context).push(
+                                    Navigator.push(
+                                      context,
                                       MaterialPageRoute(
-                                        builder: (context) => ProductDetails(
-                                          image: "images/headphones.png",
-                                          name: "Headphone",
-                                          price: "100",
-                                          details: "Good product",
-                                        ),
+                                        builder: (context) =>
+                                            CategoryDetail(category: ''),
                                       ),
                                     );
                                   },
-
-                                  child: Container(
-                                    width: 190,
-                                    margin: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Colors.white,
-                                    ),
-
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                          "images/headphones.png",
-                                          width: 120,
-                                        ),
-                                        SizedBox(height: 5),
-                                        Text(
-                                          'Headphone',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                        SizedBox(height: 5),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                left: 10,
-                                              ),
-                                              child: Text(
-                                                '\$100',
-                                                style: TextStyle(
-                                                  color: Colors.red,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 18,
-                                                ),
-                                              ),
-                                            ),
-
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                right: 10,
-                                              ),
-                                              child: TextButton(
-                                                onPressed: () {},
-                                                style: TextButton.styleFrom(
-                                                  backgroundColor: Colors.red,
-                                                  minimumSize: Size(3, 5),
-                                                ),
-                                                child: Icon(
-                                                  Icons.add,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
+                                  child: CategorieCard(
+                                    // CategorieCard widget is called for each element in "List categories"
+                                    image: categories[index],
+                                    name: categoryName[index],
                                   ),
                                 );
                               },
@@ -343,11 +257,170 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
-                  ),
-                ],
+
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      child: TextWidgets(
+                        blackText: 'All products',
+                        redText: 'See all',
+                        clickAble:
+                            true, // this calles the "SeeAllPage" class (ts not completed yet)
+                      ),
+                    ),
+
+                    Container(
+                      // all the products that are in the app should be visiable here
+                      margin: EdgeInsets.only(top: 10, left: 10, right: 10),
+                      width: double.infinity,
+                      height: 250,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              height: 230,
+                              child: ListView.builder(
+                                itemCount: 5,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return GestureDetector(
+                                    // on clicking on any of the product "ProductDetails" class is called
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => ProductDetails(
+                                            image: "images/headphones.png",
+                                            name: "Headphone",
+                                            price: "100",
+                                            details: "Good product",
+                                          ),
+                                        ),
+                                      );
+                                    },
+
+                                    child: Container(
+                                      width: 190,
+                                      margin: EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: Colors.white,
+                                      ),
+
+                                      child: Column(
+                                        children: [
+                                          Image.asset(
+                                            "images/headphones.png",
+                                            width: 120,
+                                          ),
+                                          SizedBox(height: 5),
+                                          Text(
+                                            'Headphone',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                          SizedBox(height: 5),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                  left: 10,
+                                                ),
+                                                child: Text(
+                                                  '\$100',
+                                                  style: TextStyle(
+                                                    color: Colors.red,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 18,
+                                                  ),
+                                                ),
+                                              ),
+
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                  right: 10,
+                                                ),
+                                                child: TextButton(
+                                                  onPressed: () {},
+                                                  style: TextButton.styleFrom(
+                                                    backgroundColor: Colors.red,
+                                                    minimumSize: Size(3, 5),
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.add,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
+  }
+
+  Widget builtResultCard(data) {
+    return Container(
+      color: Colors.white,
+      width: double.infinity,
+      margin: EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          SizedBox(width: 30),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Image.memory(
+              base64Decode(data['imageBase64']),
+              height: 70,
+              width: 70,
+              fit: BoxFit.cover,
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProductDetails(
+                    image: data['imageBase64'],
+                    name: data['name'],
+                    price: data['Price'],
+                    details: data['Detail'],
+                  ),
+                ),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(left: 18),
+              child: Text(
+                data['name'],
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -358,6 +431,7 @@ class TextWidgets extends StatelessWidget {
 
   // this is a constructor
   TextWidgets({
+    super.key,
     required this.blackText,
     required this.redText,
     required this.clickAble,
