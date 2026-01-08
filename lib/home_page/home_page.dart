@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_app/home_page/all_product_display.dart';
 import 'package:ecommerce_app/home_page/buttom_nav.dart';
 import 'package:ecommerce_app/pages/category_detail.dart';
 import 'package:ecommerce_app/pages/product_details.dart';
@@ -18,7 +19,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List categories = [
-    // "images/headphone_icon.png",
+    "images/headphone_icon.png",
     "images/laptop_icon.png",
     "images/watch_icon.png",
     "images/mobile_icon.png",
@@ -26,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   ];
 
   List categoryName = [
-    // "Headphone",
+    "Headphone",
     "Laptop",
     "Watch",
     "Phone",
@@ -268,106 +269,8 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
 
-                    Container(
-                      // all the products that are in the app should be visiable here
-                      margin: EdgeInsets.only(top: 10, left: 10, right: 10),
-                      width: double.infinity,
-                      height: 250,
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: SizedBox(
-                              height: 230,
-                              child: ListView.builder(
-                                itemCount: 5,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return GestureDetector(
-                                    // on clicking on any of the product "ProductDetails" class is called
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) => ProductDetails(
-                                            image: "images/headphones.png",
-                                            name: "Headphone",
-                                            price: "100",
-                                            details: "Good product",
-                                          ),
-                                        ),
-                                      );
-                                    },
-
-                                    child: Container(
-                                      width: 190,
-                                      margin: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: Colors.white,
-                                      ),
-
-                                      child: Column(
-                                        children: [
-                                          Image.asset(
-                                            "images/headphones.png",
-                                            width: 120,
-                                          ),
-                                          SizedBox(height: 5),
-                                          Text(
-                                            'Headphone',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                          SizedBox(height: 5),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                  left: 10,
-                                                ),
-                                                child: Text(
-                                                  '\$100',
-                                                  style: TextStyle(
-                                                    color: Colors.red,
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 18,
-                                                  ),
-                                                ),
-                                              ),
-
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                  right: 10,
-                                                ),
-                                                child: TextButton(
-                                                  onPressed: () {},
-                                                  style: TextButton.styleFrom(
-                                                    backgroundColor: Colors.red,
-                                                    minimumSize: Size(3, 5),
-                                                  ),
-                                                  child: Icon(
-                                                    Icons.add,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                                     
+                    AllProductDisplay(),  // this displays all the product in a row
                   ],
                 ),
               ),
@@ -375,7 +278,8 @@ class _HomePageState extends State<HomePage> {
           );
   }
 
-  Widget builtResultCard(data) { // used to add the product name and image when user is searching for the product
+  Widget builtResultCard(data) {
+    // used to add the product name and image when user is searching for the product
     return Container(
       color: Colors.white,
       width: double.infinity,
@@ -383,7 +287,8 @@ class _HomePageState extends State<HomePage> {
       child: Row(
         children: [
           SizedBox(width: 30),
-          ClipRRect(                  // the image
+          ClipRRect(
+            // the image
             borderRadius: BorderRadius.circular(20),
             child: Image.memory(
               base64Decode(data['imageBase64']),
@@ -393,7 +298,8 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           GestureDetector(
-            onTap: () {          // this re-directs the user to the "ProductDetails" page of the particular product
+            onTap: () {
+              // this re-directs the user to the "ProductDetails" page of the particular product
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -408,7 +314,8 @@ class _HomePageState extends State<HomePage> {
             },
             child: Padding(
               padding: const EdgeInsets.only(left: 18),
-              child: Text(           // the text  
+              child: Text(
+                // the text
                 data['name'],
                 style: TextStyle(
                   color: Colors.black,
