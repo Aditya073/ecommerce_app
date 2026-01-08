@@ -45,10 +45,10 @@ This app provides a complete shopping experience, including product browsing, ca
 
 | Layer | Technology |
 |-------|------------|
-| Frontend | Flutter (Dart) |
-| Backend | *(Add backend tech if used, e.g., Firebase / Node.js / etc.)* |
-| Database | *(Add database if used, e.g., Firestore / MongoDB /)* |
-| State Management | *(Provider / Bloc / GetX / Riverpod)* |
+| Frontend | Flutter |
+| Backend  |Firebase, Dart |
+| Database |Firestore|
+| State Management | Provider |
 
 ---
 
