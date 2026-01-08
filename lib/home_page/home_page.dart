@@ -375,7 +375,7 @@ class _HomePageState extends State<HomePage> {
           );
   }
 
-  Widget builtResultCard(data) {
+  Widget builtResultCard(data) { // used to add the product name and image when user is searching for the product
     return Container(
       color: Colors.white,
       width: double.infinity,
@@ -383,7 +383,7 @@ class _HomePageState extends State<HomePage> {
       child: Row(
         children: [
           SizedBox(width: 30),
-          ClipRRect(
+          ClipRRect(                  // the image
             borderRadius: BorderRadius.circular(20),
             child: Image.memory(
               base64Decode(data['imageBase64']),
@@ -393,7 +393,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           GestureDetector(
-            onTap: () {
+            onTap: () {          // this re-directs the user to the "ProductDetails" page of the particular product
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -408,7 +408,7 @@ class _HomePageState extends State<HomePage> {
             },
             child: Padding(
               padding: const EdgeInsets.only(left: 18),
-              child: Text(
+              child: Text(           // the text  
                 data['name'],
                 style: TextStyle(
                   color: Colors.black,
@@ -480,7 +480,7 @@ class TextWidgets extends StatelessWidget {
 class CategorieCard extends StatelessWidget {
   String image, name;
   // this is a constructor
-  CategorieCard({required this.image, required this.name});
+  CategorieCard({super.key, required this.image, required this.name});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
