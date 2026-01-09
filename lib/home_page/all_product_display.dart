@@ -55,18 +55,13 @@ class _AllProductDisplayState extends State<AllProductDisplay> {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext context, int index) {
                       DocumentSnapshot ds = snapshot.data!.docs[index];
-                      // print(ds['name']);
-                      // print(ds['Price']);
-                      // print(ds['Detail']);
-                      // print(ds['name']);
-                      // final imageBase64 = ds["imageBase64"];
 
                       return GestureDetector(
-                        // on clicking on any of the product "ProductDetails" class is called
+                       
                         onTap: () {
                           Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => ProductDetails(
+                            MaterialPageRoute(  // on clicking on any of the product "ProductDetails" class is called
+                              builder: (context) => ProductDetails( 
                                 image: ds['imageBase64'],
                                 name: ds['name'],
                                 price: ds['Price'],
