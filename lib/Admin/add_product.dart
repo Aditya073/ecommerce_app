@@ -119,7 +119,7 @@ class _AddProductState extends State<AddProduct> {
     newProductPrice.text = "";
   }
 
-  List<String> categoryItem = ['Watch', 'Tv', 'Laptop', 'Phone', 'Headphone'];
+  List<String> categoryItem = ['All Products','Watch', 'Tv', 'Laptop', 'Phone', 'Headphone'];
 
   String? value;
 

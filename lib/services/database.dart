@@ -40,6 +40,10 @@ class DatabaseMethods {
   Future<Stream<QuerySnapshot>> getProducts(String category) async {
     return await FirebaseFirestore.instance.collection(category).snapshots();
   }
+  Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getAllProducts() async {
+    return await FirebaseFirestore.instance.collection('All Products').snapshots();
+    
+  }
 
   Future<Stream<QuerySnapshot>> allOrders() async {
     return await FirebaseFirestore.instance
