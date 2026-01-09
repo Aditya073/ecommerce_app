@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/pages/product_details.dart';
 import 'package:ecommerce_app/services/database.dart';
@@ -12,25 +14,27 @@ class AllProductDisplay extends StatefulWidget {
 
 class _AllProductDisplayState extends State<AllProductDisplay> {
   // Stream that continuously listens to Firestore product changes
-  late final AllProductDisplay;
+  final allProductDisplay = FirebaseFirestore.instance
+      .collection('All Products')
+      .snapshots();
 
   // Called once when the page loads
   // Fetches products of the selected category
-  Future<void> getOnTheLoad() async {
-    AllProductDisplay = await DatabaseMethods().getAllProducts();
-    setState(() {});
-  }
+  // Future<void> getOnTheLoad() async {
+  //   AllProductDisplay = await DatabaseMethods().getAllProducts();
+  //   setState(() {});
+  // }
 
   @override
   void initState() {
     super.initState();
-    getOnTheLoad();
+    // getOnTheLoad();
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: AllProductDisplay,
+      stream: allProductDisplay,
 
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) {
@@ -51,10 +55,10 @@ class _AllProductDisplayState extends State<AllProductDisplay> {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext context, int index) {
                       DocumentSnapshot ds = snapshot.data!.docs[index];
-                      print(ds['name']);
-                      print(ds['Price']);
-                      print(ds['Detail']);
-                      print(ds['name']);
+                      // print(ds['name']);
+                      // print(ds['Price']);
+                      // print(ds['Detail']);
+                      // print(ds['name']);
                       // final imageBase64 = ds["imageBase64"];
 
                       return GestureDetector(
@@ -82,8 +86,14 @@ class _AllProductDisplayState extends State<AllProductDisplay> {
 
                           child: Column(
                             children: [
-                              Image.memory(ds['imageBase64'], width: 120),
-                              SizedBox(height: 5),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10),
+                                child: Image.memory(
+                                  base64Decode(ds['imageBase64']),
+                                  width: 120,
+                                ),
+                              ),
+                              Spacer(),
                               Text(
                                 ds['name'],
 
