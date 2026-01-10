@@ -51,95 +51,103 @@ class _AllOrdersState extends State<AllOrders> {
           itemBuilder: (context, index) {
             DocumentSnapshot ds = snapshot.data.docs[index];
 
-            return Material(
-              elevation: 5,
-              borderRadius: BorderRadius.circular(20),
-              child: Container(
-                padding: EdgeInsets.only(
-                  left: 20,
-                  top: 10,
-                  right: 20,
-                  bottom: 10,
-                ),
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: Colors.white,
+            return Column(
+              children: [
+                Material(
+                  elevation: 5,
                   borderRadius: BorderRadius.circular(20),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Image.memory(
-                          // Convert base64 string to image
-                          base64Decode(ds['ProductImage']),
-                          height: 120,
-                          width: 120,
-                          fit: BoxFit.cover,
-                        ),
-                        Expanded(
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Container(
-                              padding: const EdgeInsets.only(left: 20),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    ds['Product'],
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    'User Email : ' + ds['Email'],
-                                    style: TextStyle(
-                                      color: Colors.grey.shade700,
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                  Text(
-                                    'User Name : ' + ds['Name'],
-                                    style: TextStyle(
-                                      color: Colors.grey.shade600,
-                                      fontSize: 12,
-                                    ),
-                                  ),
 
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 5),
-                                    child: Text(
-                                      '\$' + ds['Price'],
-                                      style: TextStyle(
-                                        color: Colors.green.shade700,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      left: 20,
+                      top: 10,
+                      right: 20,
+                      bottom: 10,
+                    ),
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Image.memory(
+                              // Convert base64 string to image
+                              base64Decode(ds['ProductImage']),
+                              height: 120,
+                              width: 120,
+                              fit: BoxFit.cover,
+                            ),
+                            Expanded(
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Container(
+                                  padding: const EdgeInsets.only(left: 20),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        ds['Product'],
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
+                                      Text(
+                                        'User Email : ' + ds['Email'],
+                                        style: TextStyle(
+                                          color: Colors.grey.shade700,
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                      Text(
+                                        'User Name : ' + ds['Name'],
+                                        style: TextStyle(
+                                          color: Colors.grey.shade600,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 5),
+                                        child: Text(
+                                          '\$' + ds['Price'],
+                                          style: TextStyle(
+                                            color: Colors.green.shade700,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 5),
+                                      Center(
+                                        child: ElevatedButton(
+                                          onPressed: () async {
+                                            await DatabaseMethods()
+                                                .updateStatus(ds.id);
+                                            setState(() {});
+                                          },
+                                          child: Text('Done'),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  SizedBox(height: 5),
-                                  Center(
-                                    child: ElevatedButton(
-                                      onPressed: () async {
-                                        await DatabaseMethods().updateStatus(
-                                          ds.id,
-                                        );
-                                        setState(() {});
-                                      },
-                                      child: Text('Done'),
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
-                ),
-              ),
+                  ),
+                ), 
+                // Wrap the Material widget with a column widget then add this
+                // This makes so that the containets don't collide
+                const SizedBox(height: 20),
+              ],
             );
           },
         );
