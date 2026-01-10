@@ -1,82 +1,180 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_app/pages/product_details.dart';
+import 'package:ecommerce_app/services/database.dart';
 import 'package:flutter/material.dart';
 
-class SeeAllPage extends StatelessWidget {
+class SeeAllPage extends StatefulWidget {
   const SeeAllPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 20, left: 10, right: 10),
-      width: double.infinity,
-      height: double.infinity,
-      color: Color.fromARGB(255, 0, 0, 255),
-      child: Row(
-        children: [
-          Expanded(
-            child: SizedBox(
-              height: 230,
-              child: ListView.builder(
-                itemCount: 5,
-                scrollDirection: Axis.vertical,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    width: 190,
-                    margin: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
-                    ),
+  State<SeeAllPage> createState() => _SeeAllPageState();
+}
 
+class _SeeAllPageState extends State<SeeAllPage> {
+  // Stream that continuously listens to Firestore product changes
+  late final seeAllProducts;
+
+  // Called once when the page loads
+  // Fetches products of the selected category
+  Future<void> getOnTheLoad() async {
+    seeAllProducts = await DatabaseMethods().getAllProducts();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getOnTheLoad();
+  }
+
+  Widget viewProducts() {
+    return StreamBuilder<QuerySnapshot>(
+      stream: seeAllProducts,
+
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        return GridView.builder(
+          // Grid layout (2 items per row)
+          padding: const EdgeInsets.all(12),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 0.7,
+            mainAxisSpacing: 12,
+            crossAxisSpacing: 12,
+          ),
+          itemCount: snapshot.data!.docs.length,
+          itemBuilder: (context, index) {
+            DocumentSnapshot ds = snapshot.data!.docs[index];
+            final imageBase64 = ds["imageBase64"];
+
+            return Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    // product image
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(16),
+                    ),
+                    child: imageBase64 == null
+                        ? const SizedBox(
+                            height: 150,
+                            child: Icon(Icons.image_not_supported),
+                          )
+                        : Image.memory(
+                            // Convert base64 string to image
+                            base64Decode(imageBase64),
+                            height: 150,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.all(10),
                     child: Column(
+                      // product details
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Image.asset("images/headphones.png", width: 120),
-                        SizedBox(height: 5),
                         Text(
-                          'Headphone',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 18,
+                          // product name
+                          ds['name'] ?? '',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 15),
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Text(
-                                '\$100',
-                                style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18,
-                                ),
+                            Text(
+                              // product price
+                              "\$${ds['Price']}",
+                              style: const TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
                             ),
 
-                            Padding(
-                              padding: const EdgeInsets.only(right: 10),
-                              child: TextButton(
-                                onPressed: () {},
-                                style: TextButton.styleFrom(
-                                  backgroundColor: Colors.red,
-                                  minimumSize: Size(3, 5),
+                            // ADD BUTTON
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ProductDetails(
+                                      image: imageBase64,
+                                      name: ds['name'],
+                                      price: ds['Price'],
+                                      details: ds['Detail'],
+                                    ),
+                                  ),
+                                );
+                              },
+                              borderRadius: BorderRadius.circular(30),
+                              child: Container(
+                                padding: const EdgeInsets.all(6),
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.red,
                                 ),
-                                child: Icon(Icons.add, color: Colors.white),
+                                child: const Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
                               ),
                             ),
                           ],
                         ),
                       ],
                     ),
-                  );
-                },
+                  ),
+                ],
               ),
-            ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xfff2f2f2),
+      appBar: AppBar(
+        backgroundColor: const Color(0xfff2f2f2),
+        elevation: 0,
+        leading: IconButton(
+          // back icon
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          // text on the app bar
+          'All products', // based on the selected category
+          style: const TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
           ),
-        ],
+        ),
+        centerTitle: true,
       ),
+      body: viewProducts(), // the main body of the page
     );
   }
 }

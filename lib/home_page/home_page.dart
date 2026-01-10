@@ -26,13 +26,7 @@ class _HomePageState extends State<HomePage> {
     "images/tv_icon.png",
   ];
 
-  List categoryName = [
-    "Headphone",
-    "Laptop",
-    "Watch",
-    "Phone",
-    "Tv",
-  ];
+  List categoryName = ["Headphone", "Laptop", "Watch", "Phone", "Tv"];
   bool? isSelected;
   bool search = false;
   var quaryResultSet = [];
@@ -269,8 +263,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
 
-                                     
-                    AllProductDisplay(),  // this displays all the product in a row
+                    AllProductDisplay(), // this displays all the product in a row
                   ],
                 ),
               ),
