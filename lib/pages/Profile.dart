@@ -19,6 +19,24 @@ class _ProfileState extends State<Profile> {
         ),
         centerTitle: true,
       ),
+      body: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            // profile image
+            margin: EdgeInsets.only(right: 20),
+            child: Container(
+              padding: EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                color: Color(0xfff2f2f2),
+                border: Border.all(width: 2),
+                borderRadius: BorderRadius.circular(25),
+              ),
+              child: Icon(Icons.person, size: 50),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

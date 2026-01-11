@@ -43,7 +43,7 @@ class _OnbordingPageState extends State<OnbordingPage> {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => AdminLoginPage()),
+                      MaterialPageRoute(builder: (context) => LoginPage()),
                     );
                   },
                   style: TextButton.styleFrom(
